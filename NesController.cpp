@@ -1,9 +1,7 @@
-#define byte uint8_t
-
 #include <Arduino.h>
 #include "NesController.h"
 
-NesController::NesController(byte clock, byte latch, byte datin)
+NesController::NesController(uint8_t clock, uint8_t latch, uint8_t datin)
 {
 	_clock = clock;
 	_latch = latch;
@@ -19,7 +17,7 @@ NesController::NesController(byte clock, byte latch, byte datin)
 	digitalWrite(_clock,LOW);
 }
 
-byte NesController::read() {
+uint8_t NesController::read() {
 
 	controller_data = 0;
 
@@ -39,10 +37,10 @@ byte NesController::read() {
 	}
 
 	controller_data = ~controller_data;
-	
+
 	return(controller_data);
 }
 
-boolean NesController::buttonPressed(byte butt){
+boolean NesController::buttonPressed(uint8_t butt){
 	return(bitRead(controller_data,butt));
 };
