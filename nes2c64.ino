@@ -33,10 +33,6 @@ uint64_t turboDelay = 1000 / TURBO_FREQ / 2;
 bool firing = true;
 uint64_t lastTurboToggle = 0;
 
-// data read from NES controller
-// 8 bits: ABStSeUDLR
-uint8_t nesData = 0;
-
 // data to be sent to C64
 // 8 bits: ___FRLDU
 uint8_t c64Data = 0;
@@ -69,11 +65,11 @@ void loop() {
   // reset c64 data
   c64Data = B00000000;
   // read NES data
-  nesData = nes.read();
+  nes.read();
 
   // toggle "start" state when button is pressed
   startPressed_ = startPressed;
-  startPressed = bitRead(nesData, bStart);
+  startPressed = nes.buttonPressed(NES_START);
   if( startPressed && !startPressed_) {
     turboOn = !turboOn;
     digitalWrite( TURBO_LED, turboOn);
@@ -85,32 +81,32 @@ void loop() {
 
   // toggle "select" state when button is pressed
   selectPressed_ = selectPressed;
-  selectPressed = bitRead(nesData, bSelect);
+  selectPressed = nes.buttonPressed(NES_SELECT);
   if( selectPressed && !selectPressed_) {
     bJump = !bJump;
     digitalWrite(BJUMP_LED, bJump);
   }
 
   // C64 FIRE with optional turbo if ( NES A is pressed )
-  if (bitRead(nesData, bA)) {
+  if (nes.buttonPressed(NES_A)) {
     bitWrite(c64Data, C64_FIRE, turboFire());
   }
 
-  // C64 FIRE without turbo if ( NES B is pressed and NES B is in fire mode)
+  // C64 FIRE without turbo if ( NES B is pressed and NES B is in fire mode )
   // useful for firing single shots with B while button A is in turbo mode
-  if ( bitRead(nesData, bB) && !bJump ) {
+  if ( nes.buttonPressed(NES_B) && !bJump ) {
     bitWrite(c64Data, C64_FIRE, 1);
   }
 
-  // C64 UP if ( NES UP is pressed ) OR ( NES B is pressed and NES B is in jump mode)
-  if (bitRead(nesData, bUp) || ( bitRead(nesData, bB) && bJump )) {
+  // C64 UP if ( NES UP is pressed ) OR ( NES B is pressed and NES B is in jump mode )
+  if (nes.buttonPressed(NES_UP) || ( nes.buttonPressed(NES_B) && bJump )) {
     bitWrite(c64Data, C64_UP, 1);
   }
 
   // the rest is direct mapping
-  bitWrite(c64Data, C64_DOWN, bitRead(nesData, bDown));
-  bitWrite(c64Data, C64_LEFT, bitRead(nesData, bLeft));
-  bitWrite(c64Data, C64_RIGHT, bitRead(nesData, bRight));
+  bitWrite(c64Data, C64_DOWN, nes.buttonPressed(NES_DOWN));
+  bitWrite(c64Data, C64_LEFT, nes.buttonPressed(NES_LEFT));
+  bitWrite(c64Data, C64_RIGHT, nes.buttonPressed(NES_RIGHT));
 
   // pins corresponding to pressed buttons will be set as outputs, rest are inputs
   DDRB = c64Data;

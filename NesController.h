@@ -3,14 +3,14 @@
 
 #include <Arduino.h>
 
-#define bA 7
-#define bB 6
-#define bStart 4
-#define bSelect 5
-#define bUp 3
-#define bDown 2
-#define bLeft 1
-#define bRight 0
+#define NES_A 7
+#define NES_B 6
+#define NES_START 4
+#define NES_SELECT 5
+#define NES_UP 3
+#define NES_DOWN 2
+#define NES_LEFT 1
+#define NES_RIGHT 0
 
 class NesController
 {

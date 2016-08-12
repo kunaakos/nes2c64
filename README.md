@@ -2,6 +2,8 @@
 
 No resistors or other components needed!
 
+**On some boards you might need to connect pin 0 to pin 1 with a jumper wire, or the bootloader will keep the sketch from running.**
+
 Wire NES controller to the following arduino pins:
 
 4 CLOCK
