@@ -3,10 +3,6 @@
 
 #include "NesController.h"
 
-// nes controller on pins:
-// 4 CLOCK
-// 3 LATCH
-// 2 DATA IN
 NesController nes(4,3,2);
 
 // C64 button defs
@@ -101,9 +97,7 @@ void loop() {
   }
 
   // C64 FIRE without turbo if ( NES B is pressed and NES B is in fire mode)
-  // useful for single shots when turbo is on
-  // pressing NES B while NES A is pressed will fire a single shot and
-  // stop turbo fire until NES B is released
+  // useful for firing single shots with B while button A is in turbo mode
   if ( bitRead(nesData, bB) && !bJump ) {
     bitWrite(c64Data, C64_FIRE, 1);
   }
