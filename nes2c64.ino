@@ -24,7 +24,7 @@ void wrapper_autofire() {
   static uint16_t lastTriggeredMs;
   static uint16_t currentMs;
   static uint16_t lastStateChangeMs;
-  static uint16_t stateDurationMs = 100; // 5hz
+  static uint16_t stateDurationMs = 50;
   static bool state;
 
   currentMs = millis();
